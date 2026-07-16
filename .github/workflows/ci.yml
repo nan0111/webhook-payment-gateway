@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and run tests
+        env:
+          DATABASE_URL: "postgresql://user:password@db:5432/database"
+          DB_USER: "user"
+          DB_PASSWORD: "password"
+          DB_DB: "database"
+          WEBHOOK_SECRET: your_secret_key_hereAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+          SMTP_HOST: smtp.ethereal.email
+          SMTP_USER: anastasia.wolf13@ethereal.email  # テスト環境がすぐに動作するように無料アカウント設定済み
+          SMTP_PASS: SMR6VXBpvZzBeRUmQa # テスト環境がすぐに動作するように無料アカウント設定済み
+        run: |
+          docker compose up --build -d
+          docker compose exec -T app npm run format
+          docker compose exec -T app npm run lint
+          docker compose exec -T app npm test
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v

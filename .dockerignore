@@ -1,0 +1,18 @@
+.env
+.git
+.gitignore
+.dockerignore
+Dockerfile*
+*.yaml
+.md
+
+node_modules/
+dist/
+
+# databasedir
+pgdatadir
+pgbackup
+
+# Docker files
+DOCKERIMAGES
+

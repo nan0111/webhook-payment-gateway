@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model WebhookEvent {
+  id          String   @id @default(uuid())
+  eventId     String   @unique
+  processedAt DateTime @default(now())
+}
+
+model Order {
+  id        String @id
+  emailAddr String
+  status    String // PENDING, PAID, FAILED, REFUNDED
+}
